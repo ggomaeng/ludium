@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+button {
+  @apply bg-[#2176FD] hover:scale-105 text-white font-bold py-2 px-4 rounded-xl transition-all;
+}
+
+button:disabled {
+  @apply bg-gray-500 opacity-30;
+}
