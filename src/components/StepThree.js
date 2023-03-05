@@ -6,8 +6,6 @@ export default function StepThree() {
   const { chain } = useNetwork();
   const { data } = useBalance();
 
-  console.log(data);
-
   return (
     <div className="mt-10">
       <div className="text-lg font-bold mb-2">Step 3. My NFT Balance</div>

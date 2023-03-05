@@ -5,7 +5,7 @@ export default function StepTwo() {
   const { address } = useAccount();
   const { chain } = useNetwork();
   const { switchNetwork } = useSwitchNetwork();
-  const { write: mint, isLoading } = useMint(address, "");
+  const { write: mint, isLoading } = useMint(address);
 
   return (
     <div className="mt-10">

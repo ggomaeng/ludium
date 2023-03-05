@@ -7,7 +7,7 @@ import {
 import abi from "../abi/abi.json";
 import { CONTRACT_ADDRESS } from "../constants/config.js";
 
-export default function useMint(address, uri) {
+export default function useMint(address) {
   function onError(e) {
     toast.error(e.message);
   }
