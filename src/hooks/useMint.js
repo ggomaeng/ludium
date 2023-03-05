@@ -1,27 +1,44 @@
+import { toast } from "react-hot-toast";
 import {
   useContractWrite,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
 import abi from "../abi/abi.json";
+import { CONTRACT_ADDRESS } from "../constants/config.js";
 
 export default function useMint(address, uri) {
+  function onError(e) {
+    toast.error(e.message);
+  }
+
   const { config, error } = usePrepareContractWrite({
-    address: "0x9444fd8637c8af89bf25d84f6c30505c14c1babd",
+    address: CONTRACT_ADDRESS,
     abi,
     functionName: "safeMint",
-    args: [address, uri],
+    args: [address],
   });
 
-  const { data, write } = useContractWrite(config);
+  const { data, write, isLoading } = useContractWrite({
+    ...config,
+    onError,
+    onSuccess: () => toast.success("Transaction submitted"),
+  });
 
   const {
-    isLoading,
+    isLoading: txLoading,
     isSuccess,
     error: txError,
   } = useWaitForTransaction({
     hash: data?.hash,
+    onError,
+    onSuccess: () => toast.success("Minted successfully"),
   });
 
-  return { write, isLoading, isSuccess, error: error || txError };
+  return {
+    write,
+    isLoading: isLoading || txLoading,
+    isSuccess,
+    error: error || txError,
+  };
 }

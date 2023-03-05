@@ -1,12 +1,11 @@
-import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
-import useMint from "./hooks/useMint.js";
-const CHAIN_GOERLI = 5;
+import { useAccount, useNetwork, useSwitchNetwork, goerli } from "wagmi";
+import useMint from "../hooks/useMint.js";
 
 export default function StepTwo() {
   const { address } = useAccount();
   const { chain } = useNetwork();
   const { switchNetwork } = useSwitchNetwork();
-  const { write: mint } = useMint(address, "");
+  const { write: mint, isLoading } = useMint(address, "");
 
   return (
     <div className="mt-10">
@@ -15,21 +14,21 @@ export default function StepTwo() {
         <div className="text-red-500 mb-2">Connect wallet first</div>
       )}
 
-      {address && chain?.id !== CHAIN_GOERLI && (
+      {address && chain?.id !== goerli.id && (
         <div className="text-red-500 mb-2">Switch to Goerli network</div>
       )}
       <button
         onClick={() => {
-          if (chain?.id !== CHAIN_GOERLI) {
-            switchNetwork(CHAIN_GOERLI);
+          if (chain?.id !== goerli.id) {
+            switchNetwork(goerli.id);
             return;
           }
 
           mint?.();
         }}
-        disabled={chain?.id !== CHAIN_GOERLI || !address}
+        disabled={chain?.id !== goerli.id || !address || isLoading}
       >
-        Mint
+        {isLoading ? "Minting" : "Mint"}
       </button>
     </div>
   );
